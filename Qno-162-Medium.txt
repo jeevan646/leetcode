@@ -1,0 +1,15 @@
+# Divide & conquer - medium
+class Solution:
+    def findPeakElement(self, nums: List[int]) -> int:
+        return self._findPeak(nums, 0, len(nums) - 1)
+    
+    def _findPeak(self, nums: List[int], left: int, right: int) -> int:
+        if left == right:
+            return left
+        
+        mid = (left + right) // 2
+        
+        if nums[mid] > nums[mid + 1]:
+            return self._findPeak(nums, left, mid)
+        else:
+            return self._findPeak(nums, mid + 1, right)

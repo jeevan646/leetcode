@@ -1,0 +1,26 @@
+# Brute Force - Hard
+class Solution:
+    def numPermsDISequence(self, s: str) -> int:
+        kMod = 1_000_000_007
+        n = len(s)
+        dp = [[0] * (n + 1) for _ in range(n + 1)]
+        
+        # When there's only one digit, the number of permutations is 1.
+        for j in range(n + 1):
+            dp[0][j] = 1
+        
+        for i in range(1, n + 1):
+            if s[i - 1] == 'I':
+                # Calculate the postfix sum to prevent duplicate calculation.
+                postfixsum = 0
+                for j in range(n - i, -1, -1):
+                    postfixsum = (postfixsum + dp[i - 1][j + 1]) % kMod
+                    dp[i][j] = postfixsum
+            else:  # s[i - 1] == 'D'
+                # Calculate the prefix sum to prevent duplicate calculation.
+                prefix = 0
+                for j in range(0, n - i + 1):
+                    prefix = (prefix + dp[i - 1][j]) % kMod
+                    dp[i][j] = prefix
+        
+        return dp[n][0]
